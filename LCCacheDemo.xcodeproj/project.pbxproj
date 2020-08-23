@@ -14,6 +14,18 @@
 		1A3735FF24F24345003B5974 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A3735FE24F24345003B5974 /* Assets.xcassets */; };
 		1A37360224F24345003B5974 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A37360024F24345003B5974 /* LaunchScreen.storyboard */; };
 		1A37360524F24345003B5974 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A37360424F24345003B5974 /* main.m */; };
+		1A37361924F2456A003B5974 /* LCCircleListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A37360C24F2456A003B5974 /* LCCircleListViewController.m */; };
+		1A37361A24F2456A003B5974 /* LCShowAnimationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A37360F24F2456A003B5974 /* LCShowAnimationController.m */; };
+		1A37361B24F2456A003B5974 /* LCLinkedListNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A37361524F2456A003B5974 /* LCLinkedListNode.m */; };
+		1A37361C24F2456A003B5974 /* LCLRUManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A37361624F2456A003B5974 /* LCLRUManager.m */; };
+		1A37361E24F2456A003B5974 /* LCLinkedList.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A37361824F2456A003B5974 /* LCLinkedList.m */; };
+		1A37362424F2464E003B5974 /* DragImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A37362024F2464E003B5974 /* DragImageView.m */; };
+		1A37362524F2464E003B5974 /* CircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A37362124F2464E003B5974 /* CircleView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		1A37362B24F24CD5003B5974 /* LCDiskCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A37362A24F24CD5003B5974 /* LCDiskCacheManager.m */; };
+		1A37362E24F26815003B5974 /* LCDiskCacheKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A37362D24F26815003B5974 /* LCDiskCacheKeyManager.m */; };
+		1A37363024F26D29003B5974 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A37362F24F26D29003B5974 /* libsqlite3.tbd */; };
+		1A37363324F271B7003B5974 /* LCDiskCacheKeyObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A37363224F271B7003B5974 /* LCDiskCacheKeyObject.m */; };
+		91337DA1E0D25DAD096C21D2 /* libPods-LCCacheDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C6E8C98246B745C0D3230D33 /* libPods-LCCacheDemo.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +41,30 @@
 		1A37360124F24345003B5974 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A37360324F24345003B5974 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A37360424F24345003B5974 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		1A37360C24F2456A003B5974 /* LCCircleListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCCircleListViewController.m; sourceTree = "<group>"; };
+		1A37360D24F2456A003B5974 /* LCShowAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCShowAnimationController.h; sourceTree = "<group>"; };
+		1A37360E24F2456A003B5974 /* LCCircleListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCCircleListViewController.h; sourceTree = "<group>"; };
+		1A37360F24F2456A003B5974 /* LCShowAnimationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCShowAnimationController.m; sourceTree = "<group>"; };
+		1A37361124F2456A003B5974 /* LCLinkedListNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCLinkedListNode.h; sourceTree = "<group>"; };
+		1A37361224F2456A003B5974 /* LCLRUManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCLRUManager.h; sourceTree = "<group>"; };
+		1A37361324F2456A003B5974 /* LCLinkedList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCLinkedList.h; sourceTree = "<group>"; };
+		1A37361524F2456A003B5974 /* LCLinkedListNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCLinkedListNode.m; sourceTree = "<group>"; };
+		1A37361624F2456A003B5974 /* LCLRUManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCLRUManager.m; sourceTree = "<group>"; };
+		1A37361824F2456A003B5974 /* LCLinkedList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LCLinkedList.m; sourceTree = "<group>"; };
+		1A37362024F2464E003B5974 /* DragImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DragImageView.m; sourceTree = "<group>"; };
+		1A37362124F2464E003B5974 /* CircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircleView.m; sourceTree = "<group>"; };
+		1A37362224F2464E003B5974 /* DragImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DragImageView.h; sourceTree = "<group>"; };
+		1A37362324F2464E003B5974 /* CircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircleView.h; sourceTree = "<group>"; };
+		1A37362924F24CD5003B5974 /* LCDiskCacheManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LCDiskCacheManager.h; sourceTree = "<group>"; };
+		1A37362A24F24CD5003B5974 /* LCDiskCacheManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LCDiskCacheManager.m; sourceTree = "<group>"; };
+		1A37362C24F26815003B5974 /* LCDiskCacheKeyManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LCDiskCacheKeyManager.h; sourceTree = "<group>"; };
+		1A37362D24F26815003B5974 /* LCDiskCacheKeyManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LCDiskCacheKeyManager.m; sourceTree = "<group>"; };
+		1A37362F24F26D29003B5974 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		1A37363124F271B7003B5974 /* LCDiskCacheKeyObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LCDiskCacheKeyObject.h; sourceTree = "<group>"; };
+		1A37363224F271B7003B5974 /* LCDiskCacheKeyObject.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LCDiskCacheKeyObject.m; sourceTree = "<group>"; };
+		1DB9E17E5CE100C4F3A82D67 /* Pods-LCCacheDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LCCacheDemo.debug.xcconfig"; path = "Target Support Files/Pods-LCCacheDemo/Pods-LCCacheDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		BFF6FCCEAD6531EF2E4F4316 /* Pods-LCCacheDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LCCacheDemo.release.xcconfig"; path = "Target Support Files/Pods-LCCacheDemo/Pods-LCCacheDemo.release.xcconfig"; sourceTree = "<group>"; };
+		C6E8C98246B745C0D3230D33 /* libPods-LCCacheDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LCCacheDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,17 +72,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A37363024F26D29003B5974 /* libsqlite3.tbd in Frameworks */,
+				91337DA1E0D25DAD096C21D2 /* libPods-LCCacheDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0475657FCBF8B4D8032C9206 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1A37362F24F26D29003B5974 /* libsqlite3.tbd */,
+				C6E8C98246B745C0D3230D33 /* libPods-LCCacheDemo.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		1A3735E624F24342003B5974 = {
 			isa = PBXGroup;
 			children = (
 				1A3735F124F24342003B5974 /* LCCacheDemo */,
 				1A3735F024F24342003B5974 /* Products */,
+				42B68DE92B250C822B039E9C /* Pods */,
+				0475657FCBF8B4D8032C9206 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -72,8 +121,61 @@
 				1A37360024F24345003B5974 /* LaunchScreen.storyboard */,
 				1A37360324F24345003B5974 /* Info.plist */,
 				1A37360424F24345003B5974 /* main.m */,
+				1A37360B24F2456A003B5974 /* DemoDisplay */,
+				1A37361024F2456A003B5974 /* LCCache */,
 			);
 			path = LCCacheDemo;
+			sourceTree = "<group>";
+		};
+		1A37360B24F2456A003B5974 /* DemoDisplay */ = {
+			isa = PBXGroup;
+			children = (
+				1A37360E24F2456A003B5974 /* LCCircleListViewController.h */,
+				1A37360C24F2456A003B5974 /* LCCircleListViewController.m */,
+				1A37360D24F2456A003B5974 /* LCShowAnimationController.h */,
+				1A37360F24F2456A003B5974 /* LCShowAnimationController.m */,
+				1A37361F24F2464E003B5974 /* View */,
+			);
+			path = DemoDisplay;
+			sourceTree = "<group>";
+		};
+		1A37361024F2456A003B5974 /* LCCache */ = {
+			isa = PBXGroup;
+			children = (
+				1A37361124F2456A003B5974 /* LCLinkedListNode.h */,
+				1A37361524F2456A003B5974 /* LCLinkedListNode.m */,
+				1A37361224F2456A003B5974 /* LCLRUManager.h */,
+				1A37361624F2456A003B5974 /* LCLRUManager.m */,
+				1A37361324F2456A003B5974 /* LCLinkedList.h */,
+				1A37361824F2456A003B5974 /* LCLinkedList.m */,
+				1A37362924F24CD5003B5974 /* LCDiskCacheManager.h */,
+				1A37362A24F24CD5003B5974 /* LCDiskCacheManager.m */,
+				1A37362C24F26815003B5974 /* LCDiskCacheKeyManager.h */,
+				1A37362D24F26815003B5974 /* LCDiskCacheKeyManager.m */,
+				1A37363124F271B7003B5974 /* LCDiskCacheKeyObject.h */,
+				1A37363224F271B7003B5974 /* LCDiskCacheKeyObject.m */,
+			);
+			path = LCCache;
+			sourceTree = "<group>";
+		};
+		1A37361F24F2464E003B5974 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				1A37362224F2464E003B5974 /* DragImageView.h */,
+				1A37362024F2464E003B5974 /* DragImageView.m */,
+				1A37362324F2464E003B5974 /* CircleView.h */,
+				1A37362124F2464E003B5974 /* CircleView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		42B68DE92B250C822B039E9C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1DB9E17E5CE100C4F3A82D67 /* Pods-LCCacheDemo.debug.xcconfig */,
+				BFF6FCCEAD6531EF2E4F4316 /* Pods-LCCacheDemo.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +185,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1A37360824F24345003B5974 /* Build configuration list for PBXNativeTarget "LCCacheDemo" */;
 			buildPhases = (
+				E8F44FDDD5CB18DFA3614851 /* [CP] Check Pods Manifest.lock */,
 				1A3735EB24F24342003B5974 /* Sources */,
 				1A3735EC24F24342003B5974 /* Frameworks */,
 				1A3735ED24F24342003B5974 /* Resources */,
@@ -141,14 +244,49 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		E8F44FDDD5CB18DFA3614851 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LCCacheDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1A3735EB24F24342003B5974 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A37361A24F2456A003B5974 /* LCShowAnimationController.m in Sources */,
 				1A3735FA24F24342003B5974 /* ViewController.m in Sources */,
+				1A37361E24F2456A003B5974 /* LCLinkedList.m in Sources */,
+				1A37362B24F24CD5003B5974 /* LCDiskCacheManager.m in Sources */,
+				1A37361B24F2456A003B5974 /* LCLinkedListNode.m in Sources */,
+				1A37361924F2456A003B5974 /* LCCircleListViewController.m in Sources */,
 				1A3735F424F24342003B5974 /* AppDelegate.m in Sources */,
+				1A37362424F2464E003B5974 /* DragImageView.m in Sources */,
+				1A37362524F2464E003B5974 /* CircleView.m in Sources */,
 				1A37360524F24345003B5974 /* main.m in Sources */,
+				1A37361C24F2456A003B5974 /* LCLRUManager.m in Sources */,
+				1A37363324F271B7003B5974 /* LCDiskCacheKeyObject.m in Sources */,
+				1A37362E24F26815003B5974 /* LCDiskCacheKeyManager.m in Sources */,
 				1A3735F724F24342003B5974 /* SceneDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -287,6 +425,7 @@
 		};
 		1A37360924F24345003B5974 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1DB9E17E5CE100C4F3A82D67 /* Pods-LCCacheDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -303,6 +442,7 @@
 		};
 		1A37360A24F24345003B5974 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BFF6FCCEAD6531EF2E4F4316 /* Pods-LCCacheDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
