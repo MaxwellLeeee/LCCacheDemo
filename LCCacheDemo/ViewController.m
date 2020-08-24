@@ -11,6 +11,7 @@
 #import "LCLRUManager.h"
 #import "LCShowAnimationController.h"
 #import "LCCircleListViewController.h"
+#import "LCDiskCacheManager.h"
 
 #define kLoopCpunt (100000)
 #define kLimitCpunt (1000)
@@ -26,6 +27,8 @@
 @property (nonatomic, strong) LCLRUManager *circleLinkListManager;
 @property (nonatomic, strong) YYMemoryCache *yyManager;
 @property (nonatomic, strong) NSCache *cache;
+@property (nonatomic, strong) LCDiskCacheManager *diskCache;
+@property (nonatomic, strong) NSString *testString;
 @property (nonatomic, strong) UITableView *tableView;
 @end
 
@@ -36,9 +39,10 @@
     self.title = @"Cache Example";
     self.titles = @[].mutableCopy;
     self.classNames = @[].mutableCopy;
-    [self addCell:@"YYKit" class:@""];
-    [self addCell:@"LCLRUManager" class:@""];
-    [self addCell:@"NSCache" class:@""];
+    [self addCell:@"YYKit test" class:@""];
+    [self addCell:@"LCLRUManager test" class:@""];
+    [self addCell:@"NSCache test" class:@""];
+    [self addCell:@"LCDiskCache test" class:@""];
     [self addCell:@"Demo display" class:@""];
     [self.view addSubview:self.tableView];
     
@@ -96,6 +100,8 @@
     }else if (indexPath.row == 2){
 //        [self testNSCacheWithCount:1000];
         [self testNSCacheWithLimitMBSize:10];
+    }else if(indexPath.row == 3){
+        [self testDiskCacheWithCountLimit:100];
     }else{
 //        LCShowAnimationController *ctr = [LCShowAnimationController new];
         LCCircleListViewController *ctr = [LCCircleListViewController new];
@@ -251,6 +257,15 @@
     }
 }
 
+#pragma mark - disk cache limit count
+
+-(void)testDiskCacheWithCountLimit:(NSInteger)count
+{
+    for (int i = 0; i < 100; i ++) {
+        [self.diskCache setString:self.testString forKey:@(i).stringValue];        
+    }
+}
+
 #pragma mark - getters
 
 -(LCLRUManager *)circleLinkListManager
@@ -292,5 +307,22 @@
         _tableView.delegate = self;
     }
     return _tableView;
+}
+
+-(LCDiskCacheManager *)diskCache
+{
+    if (!_diskCache) {
+        _diskCache = [[LCDiskCacheManager alloc] init];
+        _diskCache.countLimit = 50;
+    }
+    return _diskCache;
+}
+
+-(NSString *)testString
+{
+    if (!_testString) {
+        _testString = @"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii";
+    }
+    return _testString;
 }
 @end

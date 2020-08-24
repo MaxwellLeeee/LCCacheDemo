@@ -41,6 +41,39 @@ static LCDiskCacheKeyManager *manager = nil;
     return manager;
 }
 
+-(instancetype)init
+{
+    self = [super init];
+    if (self) {
+        [self initDBPath];
+        if (![self _dbOpen] || ![self _dbInitialize]) {
+            // db file may broken...
+            [self _dbClose];
+            [self _reset]; // rebuild
+            if (![self _dbOpen] || ![self _dbInitialize]) {
+                [self _dbClose];
+                NSLog(@"YYKVStorage init error: fail to open sqlite db.");
+                return nil;
+            }
+        }
+    }
+    return self;
+}
+
+-(void)initDBPath
+{
+    NSArray *arr = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+    if (arr.count > 0) {
+        NSString *libraryPath = arr.firstObject;
+        _dbPath = [NSString stringWithFormat:@"%@/%@", libraryPath, kDBFileName];
+    }
+    NSLog(@"dbPath is %@", _dbPath);
+}
+
+- (void)_reset {
+    [[NSFileManager defaultManager] removeItemAtPath:_dbPath error:nil];
+}
+
 - (BOOL)_dbOpen {
     if (_db) return YES;
     
@@ -192,6 +225,10 @@ static LCDiskCacheKeyManager *manager = nil;
 }
 
 - (BOOL)_dbUpdateAccessTimeWithKey:(NSString *)key {
+    LCDiskCacheKeyObject *object = [self _dbGetItemWithKey:key excludeInlineData:NO];
+    if (!object) {
+        [self _dbSaveWithKey:key value:[NSData data] fileName:@"" extendedData:NO];
+    }
     NSString *sql = @"update manifest set last_access_time = ?1 where key = ?2;";
     sqlite3_stmt *stmt = [self _dbPrepareStmt:sql];
     if (!stmt) return NO;
@@ -263,33 +300,69 @@ static LCDiskCacheKeyManager *manager = nil;
 
 -(NSArray *)getCachedKeysWithCount:(NSInteger)count
 {
-     NSString *sql = @"select key, last_access_time from manifest order by last_access_time asc limit ?1;";
-      sqlite3_stmt *stmt = [self _dbPrepareStmt:sql];
-      if (!stmt) return nil;
-      sqlite3_bind_int(stmt, 1, (int)count);
-      
-      NSMutableArray *items = [NSMutableArray new];
-      do {
-          int result = sqlite3_step(stmt);
-          if (result == SQLITE_ROW) {
-              char *key = (char *)sqlite3_column_text(stmt, 0);
-              int size = sqlite3_column_int(stmt, 1);
-              NSString *keyStr = key ? [NSString stringWithUTF8String:key] : nil;
-              if (keyStr) {
-                  LCDiskCacheKeyObject *item = [LCDiskCacheKeyObject new];
-                  item.key = key ? [NSString stringWithUTF8String:key] : nil;
-                  item.updateTime = size;
-                  [items addObject:item];
-              }
-          } else if (result == SQLITE_DONE) {
-              break;
-          } else {
-              NSLog(@"%s line:%d sqlite query error (%d): %s", __FUNCTION__, __LINE__, result, sqlite3_errmsg(_db));
-              items = nil;
-              break;
-          }
-      } while (1);
-      return items;
+    NSString *sql = @"select key from manifest order by last_access_time asc limit ?1;";
+    sqlite3_stmt *stmt = [self _dbPrepareStmt:sql];
+    if (!stmt) return nil;
+    sqlite3_bind_int(stmt, 1, (int)count);
+    
+    NSMutableArray *items = [NSMutableArray new];
+    do {
+        int result = sqlite3_step(stmt);
+        if (result == SQLITE_ROW) {
+            char *key = (char *)sqlite3_column_text(stmt, 0);
+//            int size = sqlite3_column_int(stmt, 1);
+            NSString *keyStr = key ? [NSString stringWithUTF8String:key] : nil;
+            if (keyStr) {
+                LCDiskCacheKeyObject *item = [LCDiskCacheKeyObject new];
+                item.key = key ? [NSString stringWithUTF8String:key] : nil;
+//                item.updateTime = size;
+                [items addObject:item];
+            }
+        } else if (result == SQLITE_DONE) {
+            break;
+        } else {
+            NSLog(@"%s line:%d sqlite query error (%d): %s", __FUNCTION__, __LINE__, result, sqlite3_errmsg(_db));
+            items = nil;
+            break;
+        }
+    } while (1);
+    return items;
+}
+
+-(LCDiskCacheKeyObject *)_dbGetItemWithKey:(NSString *)key excludeInlineData:excludeInlineData
+{
+    NSString *sql = excludeInlineData ? @"select key, filename, size, modification_time, last_access_time, extended_data from manifest where key = ?1;" : @"select key, filename, size, inline_data, modification_time, last_access_time, extended_data from manifest where key = ?1;";
+    sqlite3_stmt *stmt = [self _dbPrepareStmt:sql];
+    if (!stmt) return nil;
+    sqlite3_bind_text(stmt, 1, key.UTF8String, -1, NULL);
+    
+    LCDiskCacheKeyObject *item = nil;
+    int result = sqlite3_step(stmt);
+    if (result == SQLITE_ROW) {
+        item = [self _dbGetItemFromStmt:stmt excludeInlineData:excludeInlineData];
+    } else {
+        if (result != SQLITE_DONE) {
+            NSLog(@"%s line:%d sqlite query error (%d): %s", __FUNCTION__, __LINE__, result, sqlite3_errmsg(_db));
+        }
+    }
+    return item;
+}
+
+- (LCDiskCacheKeyObject *)_dbGetItemFromStmt:(sqlite3_stmt *)stmt excludeInlineData:(BOOL)excludeInlineData {
+    int i = 0;
+    char *key = (char *)sqlite3_column_text(stmt, i++);
+    char *filename = (char *)sqlite3_column_text(stmt, i++);
+    int size = sqlite3_column_int(stmt, i++);
+    const void *inline_data = excludeInlineData ? NULL : sqlite3_column_blob(stmt, i);
+    int inline_data_bytes = excludeInlineData ? 0 : sqlite3_column_bytes(stmt, i++);
+    int modification_time = sqlite3_column_int(stmt, i++);
+    int last_access_time = sqlite3_column_int(stmt, i++);
+    const void *extended_data = sqlite3_column_blob(stmt, i);
+    int extended_data_bytes = sqlite3_column_bytes(stmt, i++);
+    
+    LCDiskCacheKeyObject *item = [LCDiskCacheKeyObject new];
+    if (key) item.key = [NSString stringWithUTF8String:key];
+    return item;
 }
 
 -(void)deleteCachedKeys:(NSArray *)keys
@@ -299,6 +372,7 @@ static LCDiskCacheKeyManager *manager = nil;
 
 - (BOOL)removeAllItems {
     if (![self _dbClose]) return NO;
+    [self _reset];
     if (![self _dbOpen]) return NO;
     if (![self _dbInitialize]) return NO;
     return YES;

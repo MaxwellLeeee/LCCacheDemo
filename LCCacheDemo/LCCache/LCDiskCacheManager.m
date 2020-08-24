@@ -10,11 +10,14 @@
 #import "MMKV.h"
 #import "LCDiskCacheKeyManager.h"
 
+#define Lock() dispatch_semaphore_wait(self->_lock, DISPATCH_TIME_FOREVER)
+#define Unlock() dispatch_semaphore_signal(self->_lock)
+
 @interface LCDiskCacheManager()
 {
     MMKV *_kv;
-    NSMapTable *_globalInstances;
-    dispatch_semaphore_t _globalInstancesLock;
+    dispatch_semaphore_t _lock;
+    dispatch_queue_t _queue;
 }
 
 @end
@@ -69,8 +72,13 @@
 }
 
 - (BOOL)setString:(NSString *)value forKey:(NSString *)key{
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
-    return [_kv setString:value forKey:key];
+    BOOL succ = [_kv setString:value forKey:key];
+    if (succ) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];            
+        });
+    }
+    return succ;
 }
 
 - (BOOL)setDate:(NSDate *)value forKey:(NSString *)key{
@@ -211,10 +219,77 @@ static LCDiskCacheManager *manager = nil;
 {
     self = [super init];
     if (self) {
-        _globalInstancesLock = dispatch_semaphore_create(1);
-        _globalInstances = [[NSMapTable alloc] initWithKeyOptions:NSPointerFunctionsStrongMemory valueOptions:NSPointerFunctionsWeakMemory capacity:0];
+        _kv = [MMKV mmkvWithID:@"cfgroup_discache"];
+        _lock = dispatch_semaphore_create(1);
+        _queue = dispatch_queue_create("com.tencent.cache.disk", DISPATCH_QUEUE_CONCURRENT);
+        _countLimit = NSUIntegerMax;
+        _sizeLimit = NSUIntegerMax;
+        _ageLimit = DBL_MAX;
+        _freeDiskSpaceLimit = 0;
+        [self tryToFindDeleteDiskCache];
     }
     return self;
+}
+
+-(void)tryToFindDeleteDiskCache
+{
+    __weak typeof(self) _self = self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(_autoTrimInterval * NSEC_PER_SEC)), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        __strong typeof(_self) self = _self;
+        if (!self) return;
+        [self _trimInBackground];
+        [self tryToFindDeleteDiskCache];
+    });
+}
+
+- (void)_trimInBackground {
+    __weak typeof(self) _self = self;
+    dispatch_async(_queue, ^{
+        __strong typeof(_self) self = _self;
+        if (!self) return;
+        Lock();
+        [self _trimToCost:self.sizeLimit];
+        [self _trimToCount:self.countLimit];
+        [self _trimToAge:self.ageLimit];
+        [self _trimToFreeDiskSpace:self.freeDiskSpaceLimit];
+        Unlock();
+    });
+}
+
+- (void)_trimToCost:(NSUInteger)costLimit {
+    if (costLimit >= INT_MAX) return;
+    [self removeItemsToFitSize:(int)costLimit];
+    
+}
+
+- (void)_trimToCount:(NSUInteger)countLimit {
+    if (countLimit >= INT_MAX) return;
+    [self removeItemsToFitCount:(int)countLimit];
+}
+
+- (void)_trimToAge:(NSTimeInterval)ageLimit {
+    if (ageLimit <= 0) {
+        [self removeAllItems];
+        return;
+    }
+    long timestamp = time(NULL);
+    if (timestamp <= ageLimit) return;
+    long age = timestamp - ageLimit;
+    if (age >= INT_MAX) return;
+//    [self removeItemsEarlierThanTime:(int)age];
+}
+
+- (void)_trimToFreeDiskSpace:(NSUInteger)targetFreeDiskSpace {
+    if (targetFreeDiskSpace == 0) return;
+    int64_t totalBytes = [_kv totalSize];
+    if (totalBytes <= 0) return;
+    int64_t diskFreeBytes = [self getDiskFreeSpace];
+    if (diskFreeBytes < 0) return;
+    int64_t needTrimBytes = targetFreeDiskSpace - diskFreeBytes;
+    if (needTrimBytes <= 0) return;
+    int64_t costLimit = totalBytes - needTrimBytes;
+    if (costLimit < 0) costLimit = 0;
+    [self _trimToCost:(int)costLimit];
 }
 
 -(BOOL)removeItemsToFitSize:(int)maxSize
@@ -298,6 +373,20 @@ static LCDiskCacheManager *manager = nil;
         [[LCDiskCacheKeyManager sharedInstance] _dbCheckpoint];
     }
     return suc;
+}
+
+-(int64_t)getDiskFreeSpace
+{
+    NSError *error = nil;
+    NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfFileSystemForPath:NSHomeDirectory() error:&error];
+    if (error){
+        return -1;
+    }
+    int64_t space =  [[attrs objectForKey:NSFileSystemFreeSize] longLongValue];
+    if (space < 0){
+        space = -1;
+    }
+    return space;
 }
 
 -(void)removeAllItems

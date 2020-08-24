@@ -15,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSUInteger countLimit;
 @property NSUInteger sizeLimit;
 @property NSTimeInterval ageLimit;
+@property NSUInteger freeDiskSpaceLimit;
+@property NSTimeInterval autoTrimInterval;
 
 +(instancetype)sharedInstance;
 

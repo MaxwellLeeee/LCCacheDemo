@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A0E904024F3B2CF00F8AD3E /* CacheDemo.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1A0E903E24F3B2CF00F8AD3E /* CacheDemo.xcdatamodeld */; };
+		1A0E904324F3B63100F8AD3E /* LCDiskCacheKeyCoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A0E904224F3B63100F8AD3E /* LCDiskCacheKeyCoreDataManager.m */; };
+		1A0E904624F3BE1E00F8AD3E /* DiskCacheKey+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0E904524F3BE1E00F8AD3E /* DiskCacheKey+CoreDataClass.swift */; };
+		1A0E904724F3BE1E00F8AD3E /* DiskCacheKey+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A0E904424F3BE1E00F8AD3E /* DiskCacheKey+CoreDataProperties.swift */; };
 		1A3735F424F24342003B5974 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A3735F324F24342003B5974 /* AppDelegate.m */; };
 		1A3735F724F24342003B5974 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A3735F624F24342003B5974 /* SceneDelegate.m */; };
 		1A3735FA24F24342003B5974 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A3735F924F24342003B5974 /* ViewController.m */; };
@@ -29,6 +33,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A0E903F24F3B2CF00F8AD3E /* CacheDemo.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CacheDemo.xcdatamodel; sourceTree = "<group>"; };
+		1A0E904124F3B63100F8AD3E /* LCDiskCacheKeyCoreDataManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LCDiskCacheKeyCoreDataManager.h; sourceTree = "<group>"; };
+		1A0E904224F3B63100F8AD3E /* LCDiskCacheKeyCoreDataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LCDiskCacheKeyCoreDataManager.m; sourceTree = "<group>"; };
+		1A0E904424F3BE1E00F8AD3E /* DiskCacheKey+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DiskCacheKey+CoreDataProperties.swift"; path = "/Users/lichang/Documents/work/LCCacheDemo/LCCacheDemo/LCCache/DiskCacheKey+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
+		1A0E904524F3BE1E00F8AD3E /* DiskCacheKey+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "DiskCacheKey+CoreDataClass.swift"; path = "/Users/lichang/Documents/work/LCCacheDemo/LCCacheDemo/LCCache/DiskCacheKey+CoreDataClass.swift"; sourceTree = "<absolute>"; };
 		1A3735EF24F24342003B5974 /* LCCacheDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LCCacheDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A3735F224F24342003B5974 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1A3735F324F24342003B5974 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -152,8 +161,13 @@
 				1A37362A24F24CD5003B5974 /* LCDiskCacheManager.m */,
 				1A37362C24F26815003B5974 /* LCDiskCacheKeyManager.h */,
 				1A37362D24F26815003B5974 /* LCDiskCacheKeyManager.m */,
+				1A0E904124F3B63100F8AD3E /* LCDiskCacheKeyCoreDataManager.h */,
+				1A0E904224F3B63100F8AD3E /* LCDiskCacheKeyCoreDataManager.m */,
 				1A37363124F271B7003B5974 /* LCDiskCacheKeyObject.h */,
 				1A37363224F271B7003B5974 /* LCDiskCacheKeyObject.m */,
+				1A0E903E24F3B2CF00F8AD3E /* CacheDemo.xcdatamodeld */,
+				1A0E904524F3BE1E00F8AD3E /* DiskCacheKey+CoreDataClass.swift */,
+				1A0E904424F3BE1E00F8AD3E /* DiskCacheKey+CoreDataProperties.swift */,
 			);
 			path = LCCache;
 			sourceTree = "<group>";
@@ -274,6 +288,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A0E904624F3BE1E00F8AD3E /* DiskCacheKey+CoreDataClass.swift in Sources */,
+				1A0E904024F3B2CF00F8AD3E /* CacheDemo.xcdatamodeld in Sources */,
 				1A37361A24F2456A003B5974 /* LCShowAnimationController.m in Sources */,
 				1A3735FA24F24342003B5974 /* ViewController.m in Sources */,
 				1A37361E24F2456A003B5974 /* LCLinkedList.m in Sources */,
@@ -281,6 +297,7 @@
 				1A37361B24F2456A003B5974 /* LCLinkedListNode.m in Sources */,
 				1A37361924F2456A003B5974 /* LCCircleListViewController.m in Sources */,
 				1A3735F424F24342003B5974 /* AppDelegate.m in Sources */,
+				1A0E904724F3BE1E00F8AD3E /* DiskCacheKey+CoreDataProperties.swift in Sources */,
 				1A37362424F2464E003B5974 /* DragImageView.m in Sources */,
 				1A37362524F2464E003B5974 /* CircleView.m in Sources */,
 				1A37360524F24345003B5974 /* main.m in Sources */,
@@ -288,6 +305,7 @@
 				1A37363324F271B7003B5974 /* LCDiskCacheKeyObject.m in Sources */,
 				1A37362E24F26815003B5974 /* LCDiskCacheKeyManager.m in Sources */,
 				1A3735F724F24342003B5974 /* SceneDelegate.m in Sources */,
+				1A0E904324F3B63100F8AD3E /* LCDiskCacheKeyCoreDataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,6 +454,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.maxwellli.LCCacheDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -453,6 +472,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.tencent.maxwellli.LCCacheDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -479,6 +499,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		1A0E903E24F3B2CF00F8AD3E /* CacheDemo.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				1A0E903F24F3B2CF00F8AD3E /* CacheDemo.xcdatamodel */,
+			);
+			currentVersion = 1A0E903F24F3B2CF00F8AD3E /* CacheDemo.xcdatamodel */;
+			path = CacheDemo.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 1A3735E724F24342003B5974 /* Project object */;
 }
