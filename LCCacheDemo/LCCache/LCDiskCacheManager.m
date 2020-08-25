@@ -375,7 +375,7 @@ static LCDiskCacheManager *manager = nil;
     if (timestamp <= ageLimit) return;
     long age = timestamp - ageLimit;
     if (age >= INT_MAX) return;
-    //    [self removeItemsEarlierThanTime:(int)age];
+    [self removeItemsEarlierThanTime:(int)age];
 }
 
 - (void)_trimToFreeDiskSpace:(NSUInteger)targetFreeDiskSpace {
@@ -468,6 +468,23 @@ static LCDiskCacheManager *manager = nil;
         }
     } while (total > maxCount && items.count > 0 && suc);
     return suc;
+}
+
+-(BOOL)removeItemsEarlierThanTime:(int)age
+{
+    if (time <= 0) return YES;
+    if (time == INT_MAX) {
+        [self removeAllItems];
+        return YES;
+    }
+    NSArray *arr = [_manager getKeysEarlierThan:age];
+    if (arr.count > 0) {
+        [arr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            NSString *key = (NSString *)obj;
+            [_kv removeValueForKey:key];
+        }];
+    }
+    return YES;
 }
 
 -(int64_t)getDiskFreeSpace

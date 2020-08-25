@@ -110,6 +110,15 @@
     return arr;
 }
 
+-(NSArray *)getKeysEarlierThan:(NSTimeInterval)time
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"DiskCacheKey"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"updateTime < %ld", time];
+    request.predicate = predicate;
+    NSArray <DiskCacheKey *> *arr = [self.context executeFetchRequest:request error:nil];
+    return arr;
+}
+
 -(void)timeNeedChangeWithKey:(NSString *)key
 {
     DiskCacheKey *object = [self findObjectWithKey:key];

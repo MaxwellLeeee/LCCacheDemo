@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)updateTimeInKey:(NSString *)key;
 -(DiskCacheKey *)findObjectWithKey:(NSString *)key;
 -(NSArray *)getKeysWithCount:(NSInteger)count;
+-(NSArray *)getKeysEarlierThan:(NSTimeInterval)time;
 -(void)removeAllData;
 
 -(void)timeNeedChangeWithKey:(NSString *)key;

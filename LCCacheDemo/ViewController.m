@@ -28,6 +28,7 @@
 @property (nonatomic, strong) YYMemoryCache *yyManager;
 @property (nonatomic, strong) NSCache *cache;
 @property (nonatomic, strong) LCDiskCacheManager *diskCache;
+@property (nonatomic, strong) YYDiskCache *yyDiskCache;
 @property (nonatomic, strong) NSString *testString;
 @property (nonatomic, strong) UITableView *tableView;
 @end
@@ -43,6 +44,7 @@
     [self addCell:@"LCLRUManager test" class:@""];
     [self addCell:@"NSCache test" class:@""];
     [self addCell:@"LCDiskCache test" class:@""];
+    [self addCell:@"YYDiskCache test" class:@""];
     [self addCell:@"Demo display" class:@""];
     [self.view addSubview:self.tableView];
     
@@ -102,6 +104,8 @@
         [self testNSCacheWithLimitMBSize:10];
     }else if(indexPath.row == 3){
         [self testDiskCacheWithCountLimit:100];
+    }else if(indexPath.row == 4){
+        [self testYYDiskCahce];
     }else{
 //        LCShowAnimationController *ctr = [LCShowAnimationController new];
         LCCircleListViewController *ctr = [LCCircleListViewController new];
@@ -261,9 +265,24 @@
 
 -(void)testDiskCacheWithCountLimit:(NSInteger)count
 {
+    NSTimeInterval start = [[NSDate date] timeIntervalSince1970];
     for (int i = 0; i < 100; i ++) {
         [self.diskCache setString:self.testString forKey:@(i).stringValue];        
     }
+    NSTimeInterval end = [[NSDate date] timeIntervalSince1970];
+    NSLog(@"disk Cache size cost = %f", (end - start));
+}
+
+#pragma mark - YYDisk cache limit count
+
+-(void)testYYDiskCahce
+{
+    NSTimeInterval start = [[NSDate date] timeIntervalSince1970];
+    for (int i = 0; i < 10000; i ++) {
+        [self.yyDiskCache setObject:self.testString forKey:@(i).stringValue];
+    }
+    NSTimeInterval end = [[NSDate date] timeIntervalSince1970];
+    NSLog(@"YY disk Cache size cost = %f", (end - start));
 }
 
 #pragma mark - getters
@@ -324,5 +343,15 @@
         _testString = @"iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii";
     }
     return _testString;
+}
+
+-(YYDiskCache *)yyDiskCache
+{
+    if (!_yyDiskCache) {
+        NSString *dataPath = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject;
+        _yyDiskCache = [[YYDiskCache alloc] initWithPath:dataPath];
+        _yyDiskCache.countLimit = 50;
+    }
+    return _yyDiskCache;
 }
 @end
