@@ -159,15 +159,15 @@
 				1A37361824F2456A003B5974 /* LCLinkedList.m */,
 				1A37362924F24CD5003B5974 /* LCDiskCacheManager.h */,
 				1A37362A24F24CD5003B5974 /* LCDiskCacheManager.m */,
-				1A37362C24F26815003B5974 /* LCDiskCacheKeyManager.h */,
-				1A37362D24F26815003B5974 /* LCDiskCacheKeyManager.m */,
 				1A0E904124F3B63100F8AD3E /* LCDiskCacheKeyCoreDataManager.h */,
 				1A0E904224F3B63100F8AD3E /* LCDiskCacheKeyCoreDataManager.m */,
-				1A37363124F271B7003B5974 /* LCDiskCacheKeyObject.h */,
-				1A37363224F271B7003B5974 /* LCDiskCacheKeyObject.m */,
 				1A0E903E24F3B2CF00F8AD3E /* CacheDemo.xcdatamodeld */,
 				1A0E904524F3BE1E00F8AD3E /* DiskCacheKey+CoreDataClass.swift */,
 				1A0E904424F3BE1E00F8AD3E /* DiskCacheKey+CoreDataProperties.swift */,
+				1A37362C24F26815003B5974 /* LCDiskCacheKeyManager.h */,
+				1A37362D24F26815003B5974 /* LCDiskCacheKeyManager.m */,
+				1A37363124F271B7003B5974 /* LCDiskCacheKeyObject.h */,
+				1A37363224F271B7003B5974 /* LCDiskCacheKeyObject.m */,
 			);
 			path = LCCache;
 			sourceTree = "<group>";

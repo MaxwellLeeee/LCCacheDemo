@@ -8,16 +8,19 @@
 
 #import "LCDiskCacheManager.h"
 #import "MMKV.h"
-#import "LCDiskCacheKeyManager.h"
+#import "LCDiskCacheKeyCoreDataManager.h"
 
 #define Lock() dispatch_semaphore_wait(self->_lock, DISPATCH_TIME_FOREVER)
 #define Unlock() dispatch_semaphore_signal(self->_lock)
+
+@class DiskCacheKey;
 
 @interface LCDiskCacheManager()
 {
     MMKV *_kv;
     dispatch_semaphore_t _lock;
     dispatch_queue_t _queue;
+    LCDiskCacheKeyCoreDataManager *_manager;
 }
 
 @end
@@ -28,178 +31,273 @@
 
 - (BOOL)setObject:(nullable NSObject<NSCoding> *)object forKey:(NSString *)key
 {
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
-    return [_kv setObject:object forKey:key];
+    BOOL succ =  [_kv setObject:object forKey:key];
+    if(succ){
+        Lock();
+        [_manager timeNeedChangeWithKey:key];
+        Unlock();
+    }
+    return succ;
 }
 
 - (BOOL)setBool:(BOOL)value forKey:(NSString *)key
 {
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
-    return [_kv setBool:value forKey:key];
+    BOOL succ =  [_kv setBool:value forKey:key];
+    if(succ){
+        Lock();
+        [_manager timeNeedChangeWithKey:key];
+        Unlock();
+    }
+    return succ;
 }
 
 - (BOOL)setInt32:(int32_t)value forKey:(NSString *)key
 {
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
-    return [_kv setInt32:value forKey:key];
+    BOOL succ =  [_kv setInt32:value forKey:key];
+    if(succ){
+        Lock();
+        [_manager timeNeedChangeWithKey:key];
+        Unlock();
+    }
+    return succ;
 }
 
 - (BOOL)setUInt32:(uint32_t)value forKey:(NSString *)key
 {
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
-    return [_kv setUInt32:value forKey:key];
+    BOOL succ =  [_kv setUInt32:value forKey:key];
+    if(succ){
+        Lock();
+        [_manager timeNeedChangeWithKey:key];
+        Unlock();
+    }
+    return succ;
 }
 
 - (BOOL)setInt64:(int64_t)value forKey:(NSString *)key
 {
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
-    return [_kv setInt64:value forKey:key];
+    BOOL succ =  [_kv setInt64:value forKey:key];
+    if(succ){
+        Lock();
+        [_manager timeNeedChangeWithKey:key];
+        Unlock();
+    }
+    return succ;
 }
 
 - (BOOL)setUInt64:(uint64_t)value forKey:(NSString *)key{
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
-    return [_kv setUInt64:value forKey:key];
+    BOOL succ =  [_kv setUInt64:value forKey:key];
+    if(succ){
+        Lock();
+        [_manager timeNeedChangeWithKey:key];
+        Unlock();
+    }
+    return succ;
 }
 
 - (BOOL)setFloat:(float)value forKey:(NSString *)key{
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
-    return [_kv setFloat:value forKey:key];
+    BOOL succ =  [_kv setFloat:value forKey:key];
+    if(succ){
+        Lock();
+        [_manager timeNeedChangeWithKey:key];
+        Unlock();
+    }
+    return succ;
 }
 
 - (BOOL)setDouble:(double)value forKey:(NSString *)key{
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
-    return [_kv setDouble:value forKey:key];
+    BOOL succ =  [_kv setDouble:value forKey:key];
+    if(succ){
+        Lock();
+        [_manager timeNeedChangeWithKey:key];
+        Unlock();
+    }
+    return succ;
 }
 
 - (BOOL)setString:(NSString *)value forKey:(NSString *)key{
     BOOL succ = [_kv setString:value forKey:key];
     if (succ) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];            
-        });
+        Lock();
+        [_manager timeNeedChangeWithKey:key];
+        Unlock();
     }
     return succ;
 }
 
 - (BOOL)setDate:(NSDate *)value forKey:(NSString *)key{
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
-    return [_kv setDate:value forKey:key];
+    BOOL succ =  [_kv setDate:value forKey:key];
+    if(succ){
+        Lock();
+        [_manager timeNeedChangeWithKey:key];
+        Unlock();
+    }
+    return succ;
 }
 
 - (BOOL)setData:(NSData *)value forKey:(NSString *)key{
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
-    return [_kv setData:value forKey:key];
+    BOOL succ =  [_kv setData:value forKey:key];
+    if(succ){
+        Lock();
+        [_manager timeNeedChangeWithKey:key];
+        Unlock();
+    }
+    return succ;
 }
 
 - (nullable id)getObjectOfClass:(Class)cls forKey:(NSString *)key{
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getObjectOfClass:cls forKey:key];
 }
 
 - (BOOL)getBoolforKey:(NSString *)key{
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getBoolForKey:key];
 }
 
 - (BOOL)getBoolForKey:(NSString *)key defaultValue:(BOOL)defaultValue
 {
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getBoolForKey:key defaultValue:defaultValue];
 }
 
 - (int32_t)getInt32forKey:(NSString *)key{
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getInt32ForKey:key];
 }
 
 - (int32_t)getInt32ForKey:(NSString *)key defaultValue:(int32_t)defaultValue
 {
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getInt32ForKey:key defaultValue:defaultValue];
 }
 
 - (uint32_t)getUInt32forKey:(NSString *)key{
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getUInt32ForKey:key];
 }
+
 - (uint32_t)getUInt32ForKey:(NSString *)key defaultValue:(uint32_t)defaultValue
 {
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getUInt32ForKey:key defaultValue:defaultValue];
 }
 
 - (int64_t)getInt64forKey:(NSString *)key{
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getInt64ForKey:key];
 }
 
 - (int64_t)getInt64ForKey:(NSString *)key defaultValue:(int64_t)defaultValue
 {
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getInt64ForKey:key defaultValue:defaultValue];
 }
 
 - (uint64_t)getUInt64forKey:(NSString *)key{
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getUInt64ForKey:key];
 }
 
 - (uint64_t)getUInt64ForKey:(NSString *)key defaultValue:(uint64_t)defaultValue
 {
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getUInt64ForKey:key defaultValue:defaultValue];
 }
 
 - (float)getFloatforKey:(NSString *)key{
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getFloatForKey:key];
 }
 
 - (float)getFloatForKey:(NSString *)key defaultValue:(float)defaultValue
 {
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getFloatForKey:key defaultValue:defaultValue];
 }
 
 - (double)getDoubleforKey:(NSString *)key{
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getDoubleForKey:key];
 }
+
 - (double)getDoubleForKey:(NSString *)key defaultValue:(double)defaultValue
 {
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getDoubleForKey:key defaultValue:defaultValue];
 }
 
 - (nullable NSString *)getStringforKey:(NSString *)key{
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getStringForKey:key];
 }
 
 - (nullable NSString *)getStringForKey:(NSString *)key defaultValue:(nullable NSString *)defaultValue
 {
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getStringForKey:key defaultValue:defaultValue];
 }
 
 - (nullable NSDate *)getDateforKey:(NSString *)key{
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getDateForKey:key];
 }
+
 - (nullable NSDate *)getDateForKey:(NSString *)key defaultValue:(nullable NSDate *)defaultValue
 {
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getDateForKey:key defaultValue:defaultValue];
 }
 
 - (nullable NSData *)getDataforKey:(NSString *)key{
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getDataForKey:key];
 }
 
 - (nullable NSData *)getDataForKey:(NSString *)key defaultValue:(nullable NSData *)defaultValue
 {
-    [[LCDiskCacheKeyManager sharedInstance] _dbUpdateAccessTimeWithKey:key];
+    Lock();
+    [_manager timeNeedChangeWithKey:key];
+    Unlock();
     return [_kv getDataForKey:key defaultValue:defaultValue];
 }
 
@@ -219,6 +317,7 @@ static LCDiskCacheManager *manager = nil;
 {
     self = [super init];
     if (self) {
+        _manager = [LCDiskCacheKeyCoreDataManager new];
         _kv = [MMKV mmkvWithID:@"cfgroup_discache"];
         _lock = dispatch_semaphore_create(1);
         _queue = dispatch_queue_create("com.tencent.cache.disk", DISPATCH_QUEUE_CONCURRENT);
@@ -276,7 +375,7 @@ static LCDiskCacheManager *manager = nil;
     if (timestamp <= ageLimit) return;
     long age = timestamp - ageLimit;
     if (age >= INT_MAX) return;
-//    [self removeItemsEarlierThanTime:(int)age];
+    //    [self removeItemsEarlierThanTime:(int)age];
 }
 
 - (void)_trimToFreeDiskSpace:(NSUInteger)targetFreeDiskSpace {
@@ -312,25 +411,23 @@ static LCDiskCacheManager *manager = nil;
     BOOL suc = NO;
     do {
         int perCount = 16;
-        items = [[LCDiskCacheKeyManager sharedInstance] getCachedKeysWithCount:perCount];
-        for (LCDiskCacheKeyObject *item in items) {
+        items = [_manager getKeysWithCount:perCount];
+        for (DiskCacheKey *item in items) {
             if (total > maxSize) {
                 size_t itemSize = 0;
                 if (item.key) {
                     itemSize = [_kv getValueSizeForKey:item.key];
                     [_kv removeValueForKey:item.key];
                 }
-                suc = [[LCDiskCacheKeyManager sharedInstance] _dbDeleteItemWithKey:item.key];
+                [_manager deleteKey:item.key];
                 total -= itemSize;
+                suc = YES;
             } else {
                 break;
             }
             if (!suc) break;
         }
     } while (total > maxSize && items.count > 0 && suc);
-    if (suc) {
-        [[LCDiskCacheKeyManager sharedInstance] _dbCheckpoint];
-    }
     return suc;
 }
 
@@ -355,23 +452,21 @@ static LCDiskCacheManager *manager = nil;
     BOOL suc = NO;
     do {
         int perCount = 16;
-        items = [[LCDiskCacheKeyManager sharedInstance] getCachedKeysWithCount:perCount];
-        for (LCDiskCacheKeyObject *item in items) {
+        items = [_manager getKeysWithCount:perCount];
+        for (DiskCacheKey *item in items) {
             if (total > maxCount) {
                 if (item.key) {
                     [_kv removeValueForKey:item.key];
                 }
-                suc = [[LCDiskCacheKeyManager sharedInstance] _dbDeleteItemWithKey:item.key];
+                [_manager deleteKey:item.key];
                 total--;
+                suc = YES;
             } else {
                 break;
             }
             if (!suc) break;
         }
     } while (total > maxCount && items.count > 0 && suc);
-    if (suc) {
-        [[LCDiskCacheKeyManager sharedInstance] _dbCheckpoint];
-    }
     return suc;
 }
 
@@ -392,7 +487,7 @@ static LCDiskCacheManager *manager = nil;
 -(void)removeAllItems
 {
     [_kv clearAll];
-    [[LCDiskCacheKeyManager sharedInstance] removeAllItems];
+    [_manager removeAllData];
 }
 
 @end

@@ -30,7 +30,8 @@
         NSPersistentStoreCoordinator *coordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
         NSString *dataPath = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES).firstObject;
         dataPath = [NSString stringWithFormat:@"%@/diskcacheKey.sqlite", dataPath];
-        [coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[NSURL URLWithString:dataPath] options:nil error:nil];
+        [coordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[NSURL fileURLWithPath:dataPath] options:nil error:nil];
+        NSLog(@"db path = %@", dataPath);
         _context.persistentStoreCoordinator = coordinator;
     }
     return _context;
@@ -71,17 +72,65 @@
 //https://www.jianshu.com/p/d9ee92cd3483
 -(void)deleteKey:(NSString *)key
 {
-    
+    DiskCacheKey *object = [self findObjectWithKey:key];
+    if (object) {
+        [self.context deleteObject:object];
+        NSLog(@"删除数据成功 key : %@", key);
+    }
 }
 
 -(void)updateTimeInKey:(NSString *)key
 {
-    
+    DiskCacheKey *object = [self findObjectWithKey:key];
+    object.updateTime = time(NULL);
+    if ([self.context hasChanges]) {
+        [self.context save:nil];
+        NSLog(@"更新数据成功 key : %@", key);
+    }
+}
+
+-(DiskCacheKey *)findObjectWithKey:(NSString *)key
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"DiskCacheKey"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"key = %@", key];
+    request.predicate = predicate;
+    NSError *error = nil;
+    NSArray <DiskCacheKey *> *arr = [self.context executeFetchRequest:request error:&error];
+    return arr.firstObject;
 }
 
 -(NSArray *)getKeysWithCount:(NSInteger)count
 {
-    return nil;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"DiskCacheKey"];
+    request.fetchLimit = count;
+    NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"updateTime" ascending:YES];
+    [request setSortDescriptors:@[sort]];
+    NSError *error = nil;
+    NSArray <DiskCacheKey *> *arr = [self.context executeFetchRequest:request error:&error];
+    return arr;
+}
+
+-(void)timeNeedChangeWithKey:(NSString *)key
+{
+    DiskCacheKey *object = [self findObjectWithKey:key];
+    if (object) {
+        object.updateTime = time(NULL);
+        if ([self.context hasChanges]) {
+            [self.context save:nil];
+            NSLog(@"更新数据成功 key : %@", key);
+        }
+    }else{
+        [self insertKey:key];
+    }
+}
+
+-(void)removeAllData
+{
+    NSError *error = nil;
+    NSFetchRequest *fetch = [NSFetchRequest fetchRequestWithEntityName:@"DiskCacheKey"];
+    NSBatchDeleteRequest *request = [[NSBatchDeleteRequest alloc] initWithFetchRequest:fetch];
+    [self.context executeRequest:request error:&error];
+    [self.context save:nil];
 }
 
 @end
